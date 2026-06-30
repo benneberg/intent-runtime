@@ -1,0 +1,6 @@
+{
+  "name": "Intent Runtime",
+  "description": "An interactive playground, visualization dashboard, and execution kernel for the Intent Runtime AI receptionist.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
