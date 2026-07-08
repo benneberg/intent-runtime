@@ -30,7 +30,8 @@ export type RuntimeEventType =
   | 'ACTION_DISPATCHED'
   | 'ACTION_COMPLETED'
   | 'ACTION_FAILED'
-  | 'ANOMALY_DETECTED';
+  | 'ANOMALY_DETECTED'
+  | 'FACTS_OVERRIDDEN';
 
 export interface RuntimeEvent {
   event_id: string;

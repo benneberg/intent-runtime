@@ -26,7 +26,10 @@ import {
   Shield,
   Layers,
   Sparkles,
-  Info
+  Info,
+  Edit3,
+  Check,
+  X
 } from "lucide-react";
 
 interface ReplayStep {
@@ -84,6 +87,59 @@ export default function App() {
 
   // Auto-scroll ref
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Edit facts state
+  const [isEditingFacts, setIsEditingFacts] = useState(false);
+  const [editedFacts, setEditedFacts] = useState<{
+    name?: string;
+    phone?: string;
+    date?: string;
+    time?: string;
+    party_size?: string;
+  }>({});
+
+  const startEditingFacts = () => {
+    setEditedFacts({
+      name: activeSession.facts?.name || "",
+      phone: activeSession.facts?.phone || "",
+      date: activeSession.facts?.date || "",
+      time: activeSession.facts?.time || "",
+      party_size: activeSession.facts?.party_size?.toString() || ""
+    });
+    setIsEditingFacts(true);
+  };
+
+  const handleSaveFactsOverride = async () => {
+    try {
+      const res = await fetch("/api/session/facts/override", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: activeSessionId,
+          facts: editedFacts
+        })
+      });
+      if (res.ok) {
+        setIsEditingFacts(false);
+        // Refresh database stats
+        await fetchDbStats();
+        
+        // Add system message to dialogue trace
+        setMessages(prev => [...prev, {
+          id: generateId(),
+          sender: "system",
+          text: `Manual Override Success: Facts reconciled and state updated dynamically in the background.`,
+          timestamp: new Date().toLocaleTimeString()
+        }]);
+      } else {
+        const err = await res.json();
+        console.error("Failed to override facts:", err.error);
+        alert(`Override failed: ${err.error}`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   // Fetch metrics and state from server
   const fetchDbStats = async () => {
@@ -605,42 +661,131 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               {/* RECONCILED FACTS TABLE */}
-              <div className="border border-[#222] p-4 bg-[#0D0D0D] rounded-none">
-                <h3 className="text-[10px] uppercase tracking-widest text-[#666] mb-3 font-bold flex justify-between">
-                  <span>Fact Reconciliation Engine</span>
-                  <span className="text-[#FF5F1F] font-mono">reconciled_facts</span>
-                </h3>
-                <div className="font-mono text-xs space-y-2">
-                  <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
-                    <span className="text-[#444]">name</span>
-                    <span className={activeSession.facts?.name ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
-                      {activeSession.facts?.name || "UNSET"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
-                    <span className="text-[#444]">phone</span>
-                    <span className={activeSession.facts?.phone ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
-                      {activeSession.facts?.phone || "UNSET"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
-                    <span className="text-[#444]">date</span>
-                    <span className={activeSession.facts?.date ? "text-[#FF5F1F] font-medium" : "text-[#222] italic"}>
-                      {activeSession.facts?.date || "UNSET"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
-                    <span className="text-[#444]">time</span>
-                    <span className={activeSession.facts?.time ? "text-[#FF5F1F] font-medium" : "text-[#222] italic"}>
-                      {activeSession.facts?.time || "UNSET"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
-                    <span className="text-[#444]">party_size</span>
-                    <span className={activeSession.facts?.party_size ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
-                      {activeSession.facts?.party_size || "UNSET"}
-                    </span>
-                  </div>
+              <div className="border border-[#222] p-4 bg-[#0D0D0D] rounded-none flex flex-col justify-between min-h-[220px]">
+                <div>
+                  <h3 className="text-[10px] uppercase tracking-widest text-[#666] mb-3 font-bold flex justify-between items-center">
+                    <span>Fact Reconciliation Engine</span>
+                    <div className="flex gap-2">
+                      {!isEditingFacts ? (
+                        <button
+                          onClick={startEditingFacts}
+                          className="px-2 py-0.5 bg-[#161616] hover:bg-[#FF5F1F] text-[#888] hover:text-black border border-[#222] hover:border-transparent rounded-none text-[9px] font-mono uppercase tracking-wider transition-all duration-150 flex items-center gap-1 cursor-pointer"
+                          title="Override Extracted Facts"
+                        >
+                          <Edit3 size={10} />
+                          Override
+                        </button>
+                      ) : (
+                        <div className="flex gap-1">
+                          <button
+                            onClick={handleSaveFactsOverride}
+                            className="px-2 py-0.5 bg-green-950/40 text-green-400 hover:bg-green-500 hover:text-black border border-green-900 hover:border-transparent rounded-none text-[9px] font-mono uppercase tracking-wider transition-all duration-150 flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <Check size={10} />
+                            Save
+                          </button>
+                          <button
+                            onClick={() => setIsEditingFacts(false)}
+                            className="px-2 py-0.5 bg-red-950/40 text-red-400 hover:bg-red-500 hover:text-black border border-red-900 hover:border-transparent rounded-none text-[9px] font-mono uppercase tracking-wider transition-all duration-150 flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <X size={10} />
+                            Cancel
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </h3>
+
+                  {!isEditingFacts ? (
+                    <div className="font-mono text-xs space-y-2 mt-1">
+                      <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
+                        <span className="text-[#444]">name</span>
+                        <span className={activeSession.facts?.name ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
+                          {activeSession.facts?.name || "UNSET"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
+                        <span className="text-[#444]">phone</span>
+                        <span className={activeSession.facts?.phone ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
+                          {activeSession.facts?.phone || "UNSET"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
+                        <span className="text-[#444]">date</span>
+                        <span className={activeSession.facts?.date ? "text-[#FF5F1F] font-medium" : "text-[#222] italic"}>
+                          {activeSession.facts?.date || "UNSET"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
+                        <span className="text-[#444]">time</span>
+                        <span className={activeSession.facts?.time ? "text-[#FF5F1F] font-medium" : "text-[#222] italic"}>
+                          {activeSession.facts?.time || "UNSET"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#1A1A1A] pb-1.5">
+                        <span className="text-[#444]">party_size</span>
+                        <span className={activeSession.facts?.party_size ? "text-[#E0E0E0] font-medium" : "text-[#222] italic"}>
+                          {activeSession.facts?.party_size || "UNSET"}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="font-mono text-[11px] space-y-2 mt-1 bg-[#0A0A0A] p-2 border border-[#222]">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] text-[#444] uppercase font-bold">name</label>
+                        <input
+                          type="text"
+                          value={editedFacts.name || ""}
+                          onChange={(e) => setEditedFacts(prev => ({ ...prev, name: e.target.value }))}
+                          className="bg-[#111] border border-[#222] text-xs font-mono text-white px-2 py-1 rounded-none outline-none focus:border-[#FF5F1F]"
+                          placeholder="e.g. John Doe"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] text-[#444] uppercase font-bold">phone</label>
+                        <input
+                          type="text"
+                          value={editedFacts.phone || ""}
+                          onChange={(e) => setEditedFacts(prev => ({ ...prev, phone: e.target.value }))}
+                          className="bg-[#111] border border-[#222] text-xs font-mono text-white px-2 py-1 rounded-none outline-none focus:border-[#FF5F1F]"
+                          placeholder="e.g. 415-555-1212"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[9px] text-[#444] uppercase font-bold">date</label>
+                          <input
+                            type="text"
+                            value={editedFacts.date || ""}
+                            onChange={(e) => setEditedFacts(prev => ({ ...prev, date: e.target.value }))}
+                            className="bg-[#111] border border-[#222] text-xs font-mono text-white px-2 py-1 rounded-none outline-none focus:border-[#FF5F1F]"
+                            placeholder="YYYY-MM-DD"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[9px] text-[#444] uppercase font-bold">time</label>
+                          <input
+                            type="text"
+                            value={editedFacts.time || ""}
+                            onChange={(e) => setEditedFacts(prev => ({ ...prev, time: e.target.value }))}
+                            className="bg-[#111] border border-[#222] text-xs font-mono text-white px-2 py-1 rounded-none outline-none focus:border-[#FF5F1F]"
+                            placeholder="HH:MM"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[9px] text-[#444] uppercase font-bold">party size</label>
+                        <input
+                          type="number"
+                          value={editedFacts.party_size || ""}
+                          onChange={(e) => setEditedFacts(prev => ({ ...prev, party_size: e.target.value }))}
+                          className="bg-[#111] border border-[#222] text-xs font-mono text-white px-2 py-1 rounded-none outline-none focus:border-[#FF5F1F]"
+                          placeholder="e.g. 4"
+                          min="1"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

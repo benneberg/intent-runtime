@@ -601,6 +601,74 @@ app.post("/api/session/input", async (req, res) => {
   });
 });
 
+// Manual override of session facts for debugging purposes
+app.post("/api/session/facts/override", (req, res) => {
+  const { session_id, facts } = req.body;
+  if (!session_id || !facts) {
+    return res.status(400).json({ error: "session_id and facts are required" });
+  }
+
+  const session = sessions.find(s => s.session_id === session_id);
+  if (!session) {
+    return res.status(404).json({ error: "Session not found" });
+  }
+
+  const previousFacts = { ...session.facts };
+  const updatedFacts = { ...session.facts };
+
+  // Update properties if provided (handles undefined or empty string nicely)
+  if (facts.name !== undefined) {
+    updatedFacts.name = facts.name === "" ? undefined : facts.name;
+  }
+  if (facts.phone !== undefined) {
+    updatedFacts.phone = facts.phone === "" ? undefined : facts.phone;
+  }
+  if (facts.date !== undefined) {
+    updatedFacts.date = facts.date === "" ? undefined : facts.date;
+  }
+  if (facts.time !== undefined) {
+    updatedFacts.time = facts.time === "" ? undefined : facts.time;
+  }
+  if (facts.party_size !== undefined) {
+    if (facts.party_size === "") {
+      updatedFacts.party_size = undefined;
+    } else {
+      const val = parseInt(facts.party_size, 10);
+      updatedFacts.party_size = isNaN(val) ? undefined : val;
+    }
+  }
+
+  session.facts = updatedFacts;
+  
+  // Re-evaluate state
+  const oldState = session.current_state;
+  const nextState = evaluateMissingFields(session.facts);
+  session.current_state = nextState;
+  session.updated_at = new Date().toISOString();
+
+  const nowStr = new Date().toISOString();
+  // Log manual override event
+  events.push({
+    event_id: generateUUID(),
+    session_id,
+    event_type: "FACTS_OVERRIDDEN",
+    payload: { previous_facts: previousFacts, overridden_facts: session.facts, state_transition: { from: oldState, to: nextState } },
+    created_at: nowStr
+  });
+
+  if (oldState !== nextState) {
+    events.push({
+      event_id: generateUUID(),
+      session_id,
+      event_type: "STATE_TRANSITION",
+      payload: { from: oldState, to: nextState, trigger_intent: "MANUAL_OVERRIDE" },
+      created_at: nowStr
+    });
+  }
+
+  res.json({ status: "ok", session });
+});
+
 // 4. Workflow Replay Engine (Reconstruct past sessions step-by-step to audit discrepancies)
 app.post("/api/session/replay", (req, res) => {
   const { session_id } = req.body;
