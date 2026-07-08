@@ -230,6 +230,7 @@ app.post("/api/session/input", async (req, res) => {
   // Step B: Intent Parsing and Fact Extraction via Gemini or simulation
   const client = getGeminiClient();
   let intent = "OTHER";
+  let confidence = 0.95;
   let extractedFacts: BookingFacts = {};
   let isSimulated = true;
   let inputTokens = 0;
@@ -242,7 +243,7 @@ app.post("/api/session/input", async (req, res) => {
       console.log(`Running analysis using Gemini model: ${modelUsed}`);
       const systemInstruction = `
         You are the parser and fact reconciliation module of an Intent Runtime for an AI Booking Receptionist at a premium restaurant.
-        Your job is to read user input and output a strict JSON structure containing the extracted intent and facts.
+        Your job is to read user input and output a strict JSON structure containing the extracted intent, your confidence level, and facts.
         
         The possible user intents are:
         - "REQUEST_BOOKING": Expresses intent to book or reserve a table/slot.
@@ -266,6 +267,7 @@ app.post("/api/session/input", async (req, res) => {
         Format your entire output strictly as a JSON object matching this schema:
         {
           "intent": "REQUEST_BOOKING" | "PROVIDE_INFORMATION" | "CONFIRM" | "REJECT" | "CHITCHAT" | "OTHER",
+          "confidence": number, // A confidence score between 0.0 and 1.0 representing accuracy of the parsed intent
           "facts": {
             "date": string | null,
             "time": string | null,
@@ -287,6 +289,7 @@ app.post("/api/session/input", async (req, res) => {
             type: Type.OBJECT,
             properties: {
               intent: { type: Type.STRING },
+              confidence: { type: Type.NUMBER },
               facts: {
                 type: Type.OBJECT,
                 properties: {
@@ -299,7 +302,7 @@ app.post("/api/session/input", async (req, res) => {
               },
               reasoning: { type: Type.STRING }
             },
-            required: ["intent", "facts"]
+            required: ["intent", "confidence", "facts"]
           }
         }
       });
@@ -307,6 +310,7 @@ app.post("/api/session/input", async (req, res) => {
       const textOutput = response.text?.trim() || "{}";
       const parsed = JSON.parse(textOutput);
       intent = parsed.intent || "OTHER";
+      confidence = typeof parsed.confidence === "number" ? parsed.confidence : 0.98;
       
       // Filter out null/undefined values from facts
       if (parsed.facts) {
@@ -334,14 +338,23 @@ app.post("/api/session/input", async (req, res) => {
     // Simple intent heuristics
     if (textLower.includes("book") || textLower.includes("reserve") || textLower.includes("table") || textLower.includes("appointment")) {
       intent = "REQUEST_BOOKING";
+      confidence = 0.95;
     } else if (textLower.includes("yes") || textLower.includes("confirm") || textLower.includes("correct") || textLower.includes("perfect") || textLower.includes("sure")) {
       intent = "CONFIRM";
+      confidence = 0.96;
     } else if (textLower.includes("no") || textLower.includes("cancel") || textLower.includes("stop") || textLower.includes("reject")) {
       intent = "REJECT";
+      confidence = 0.94;
     } else if (textLower.includes("hello") || textLower.includes("hi") || textLower.includes("hey") || textLower.includes("greetings")) {
       intent = "CHITCHAT";
+      confidence = 0.90;
     } else {
       intent = "PROVIDE_INFORMATION";
+      confidence = 0.85;
+    }
+
+    if (text.trim() === "") {
+      confidence = 0.20;
     }
 
     // Heuristics for facts extraction
@@ -409,7 +422,7 @@ app.post("/api/session/input", async (req, res) => {
     event_id: generateUUID(),
     session_id,
     event_type: "INTENT_PARSED",
-    payload: { intent, confidence: isSimulated ? 0.8 : 0.98, prompt_version },
+    payload: { intent, confidence, prompt_version },
     telemetry_metadata: {
       provider: isSimulated ? "internal" : "google",
       model: modelUsed,
@@ -583,6 +596,7 @@ app.post("/api/session/input", async (req, res) => {
     session,
     reply: botReply,
     intent,
+    confidence,
     extractedFacts
   });
 });

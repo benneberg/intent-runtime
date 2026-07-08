@@ -71,6 +71,7 @@ export default function App() {
   const [lastResponse, setLastResponse] = useState<{
     intent?: string;
     extractedFacts?: BookingFacts;
+    confidence?: number;
   }>({});
 
   // Tab state for right-hand diagnostic panels
@@ -234,7 +235,8 @@ export default function App() {
         setMessages(prev => [...prev, botMsg]);
         setLastResponse({
           intent: data.intent,
-          extractedFacts: data.extractedFacts
+          extractedFacts: data.extractedFacts,
+          confidence: data.confidence
         });
 
         // Trigger live state reload
@@ -662,9 +664,22 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="mt-2 text-[10px] font-mono text-[#444] flex justify-between border-t border-[#1C1C1C] pt-2">
-                  <span>Last Intent Parsed:</span>
-                  <span className="text-[#E0E0E0] font-bold">{lastResponse.intent || "NONE"}</span>
+                <div className="mt-2 text-[10px] font-mono text-[#444] flex flex-col gap-1 border-t border-[#1C1C1C] pt-2">
+                  <div className="flex justify-between">
+                    <span>Last Intent Parsed:</span>
+                    <span className="text-[#E0E0E0] font-bold">{lastResponse.intent || "NONE"}</span>
+                  </div>
+                  {lastResponse.confidence !== undefined && (
+                    <div className="flex justify-between text-[9px]">
+                      <span>Intent Confidence Score:</span>
+                      <span className={`font-bold ${
+                        lastResponse.confidence >= 0.9 ? "text-green-500" :
+                        lastResponse.confidence >= 0.75 ? "text-[#FF5F1F]" : "text-yellow-500"
+                      }`}>
+                        {(lastResponse.confidence).toFixed(2)} ({Math.round(lastResponse.confidence * 100)}%)
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
