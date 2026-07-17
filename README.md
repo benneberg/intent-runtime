@@ -2,59 +2,125 @@
 
 An interactive full-stack playground, visual telemetry dashboard, and execution kernel for the **Intent Runtime** (AI Receptionist MVP).
 
-The Intent Runtime is built around six permanent architectural pillars, shifting the focus from isolated business logic to a robust, deterministic state machine powered by stateless LLM reasoning.
+The Intent Runtime is built around six permanent architectural pillars, shifting the focus from isolated conversational logic to a robust, deterministic state machine powered by stateless LLM reasoning.
 
 ---
 
-## 🏗️ Core Architecture Pillars
+## Overview
+
+The Intent Runtime acts as a secure, deterministic engine built around six permanent pillars:
 
 1. **Intent Parser**: Translates raw conversational text or interactions into typed system intents.
-2. **Fact Reconciliation Engine**: Processes input text to continuously merge and update key-value facts, preventing duplicate states or obsolete fields.
+2. **Fact Reconciliation Engine**: Processes input text to continuously merge and update key-value facts, preventing duplicate states or obsolete fields. Supports live manual overrides for debugging.
 3. **Session State Store**: Maintains user sessions, current node locations, accumulated facts, and execution locks.
 4. **Deterministic State Machine**: A strict node matrix driven by explicit transitions and security guards, removing ambiguity management from natural language prompts.
 5. **Action Queue**: An asynchronous worker queue decoupling slow integration processes (like calendar synchronization) from the main user thread.
-6. **Event Store**: An immutable ledger capturing all system-wide occurrences (`INPUT_RECEIVED`, `FACTS_EXTRACTED`, `INTENT_PARSED`, `STATE_TRANSITION`, etc.) for auditing and replay.
+6. **Event Store**: An immutable ledger capturing all system-wide occurrences (`INPUT_RECEIVED`, `FACTS_EXTRACTED`, `INTENT_PARSED`, `STATE_TRANSITION`, `FACTS_OVERRIDDEN`, etc.) for auditing and replay.
+
+The primary application target validating this runtime is the **AI Receptionist** (Restaurant / Office Booking Agent).
 
 ---
 
-## 🛠️ Feature Highlights
+## Requirements
 
-* **Geometric Balance Design**: Built on a monochromatic high-contrast visual theme with sharp 90-degree corner radii, golden-ratio spaced component containers, and bright orange (`#FF5F1F`) interactive accents.
-* **Prompt Version Tracking**: Deep traceability capturing `provider`, `model`, `prompt_version`, `latency_ms`, and `input`/`output` tokens for every model inference.
-* **Idempotency Execution**: Strict deduplication checking via client-provided transition `request_id` keys to protect side-effects from repeat webhook deliveries.
-* **Workflow Replay & State Auditing**: Real-time simulation testing that parses past sessions, emulates state rules side-by-side with historical logs, and highlights transition anomalies.
-* **Interactive State Transition Map**: A balanced SVG visualization representing active states and connections using clean geometric circles and lines.
+The application runs in a standard Node.js environment.
+
+* Node.js (v18 or higher recommended)
+* npm (configured package manager)
 
 ---
 
-## 🚀 Getting Started
+## Installation
 
-### 1. Install Dependencies
+To install all necessary base dependencies from `package.json`:
+
 ```bash
 npm install
 ```
 
-### 2. Configure Environment Secrets
+---
+
+## Configuration
+
 Create a `.env` file in the root directory (based on `.env.example`):
+
 ```env
 GEMINI_API_KEY="YOUR_GOOGLE_GEMINI_API_KEY"
 APP_URL="http://localhost:3000"
 ```
 
-### 3. Run Development Server
+If `GEMINI_API_KEY` is omitted or unconfigured, the application falls back automatically to internal deterministic rule heuristic parsing for intent and fact extraction.
+
+---
+
+## Usage
+
+### 1. Run Development Server
+To boot the full-stack development application (Express API server + Vite client assets via middleware):
+
 ```bash
 npm run dev
 ```
 
-### 4. Build for Production
+The dev server binds to host `0.0.0.0` and port `3000`. Open `http://localhost:3000` in your browser.
+
+### 2. Playground Controls
+* **Dialogue Interaction**: Conversational window to submit prompts to the AI Receptionist.
+* **Interactive State Transition Map**: Real-time visual SVG displaying current nodes (idle, awaiting_date, awaiting_time, awaiting_contact_information, awaiting_confirmation, completed).
+* **Fact Reconciliation Engine Overrides**: Click the **Override** button on the Fact Reconciliation Engine widget to manually edit extracted facts (name, phone, date, time, party_size) for debugging and simulation.
+* **Workflow Replay**: Perform an instant side-by-side simulation audit of any past session logs to detect behavior discrepancies.
+
+---
+
+## Testing
+
+UNSET
+
+*Note: No automated test frameworks or unit test scripts are currently configured in `package.json`.*
+
+---
+
+## Build
+
+To compile static client assets and bundle the server for production deployment:
+
 ```bash
 npm run build
+```
+
+This runs:
+1. `vite build` - Compiles frontend assets into `dist/`
+2. `esbuild server.ts` - Bundles the backend server into `dist/server.cjs`
+
+To start the production-built bundle:
+
+```bash
 npm start
 ```
 
 ---
 
-## 📄 Documentation Manifest
-* **`MASTER_SPEC.md`**: The authoritative build specification, detailing the relational schemas, state matrices, and validation rules.
-* **`IMPLEMENTATION_PLAN.md`**: Phase-by-phase launch roadmap mapping milestones, success metrics, and platform monetization gates.
-* **`FUTURE_ARCHITECTURE.md`**: Tracks deferred strategic abstractions (such as vector databases, ClickHouse analytical clusters, and Kubernetes) to keep speed-to-revenue prioritized.
+## Deployment
+
+The application is designed to be deployed as a serverless container to **Google Cloud Run**.
+
+* Standard Ingress Port: **3000**
+* Execution Mode: Production bundles run via `node dist/server.cjs`
+
+---
+
+## Repository Structure
+
+* **`package.json`**: Manages scripts and project package dependencies.
+* **`vite.config.ts`**: Vite bundle configurations with Tailwind CSS plugins.
+* **`server.ts`**: Express backend application, Gemini SDK integrations, in-memory DB arrays, action worker simulation, and facts override API.
+* **`metadata.json`**: App identity metadata and capabilities array.
+* **`tsconfig.json`**: TypeScript compiler targets.
+* **`MASTER_SPEC.md`**: Technical specification detailing schemas, transition matrix, and pillars.
+* **`IMPLEMENTATION_PLAN.md`**: Phase-by-phase roadmap for platform development and product monetization.
+* **`FUTURE_ARCHITECTURE.md`**: Log of deferred capabilities (vector databases, K8s, analytics clusters).
+* **`src/`**
+  * **`main.tsx`**: React client entry file.
+  * **`App.tsx`**: Single-page visualization dashboard, chat interfaces, and debug overrides.
+  * **`types.ts`**: Common typescript interfaces for sessions, actions, telemetry, and event schemas.
+  * **`index.css`**: Tailwind imports stylesheet.
