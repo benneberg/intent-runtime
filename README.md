@@ -2,15 +2,15 @@
 
 An interactive full-stack playground, visual telemetry dashboard, and execution kernel for the **Intent Runtime** (AI Receptionist MVP).
 
-The Intent Runtime is built around six permanent architectural pillars, shifting the focus from isolated conversational logic to a robust, deterministic state machine powered by stateless LLM reasoning.
+The Intent Runtime wraps stateless LLM reasoning in a deterministic state machine, continuous fact reconciliation engine, asynchronous action queue, and immutable event ledger.
 
 ---
 
 ## Overview
 
-The Intent Runtime acts as a secure, deterministic engine built around six permanent pillars:
+The Intent Runtime is structured around six core pillars:
 
-1. **Intent Parser**: Translates raw conversational text or interactions into typed system intents.
+1. **Intent Parser**: Translates raw conversational text into typed system intents.
 2. **Fact Reconciliation Engine**: Processes input text to continuously merge and update key-value facts, preventing duplicate states or obsolete fields. Supports live manual overrides for debugging.
 3. **Session State Store**: Maintains user sessions, current node locations, accumulated facts, and execution locks.
 4. **Deterministic State Machine**: A strict node matrix driven by explicit transitions and security guards, removing ambiguity management from natural language prompts.
@@ -23,16 +23,14 @@ The primary application target validating this runtime is the **AI Receptionist*
 
 ## Requirements
 
-The application runs in a standard Node.js environment.
-
-* Node.js (v18 or higher recommended)
-* npm (configured package manager)
+* Node.js (v18+ recommended)
+* npm (package manager)
 
 ---
 
 ## Installation
 
-To install all necessary base dependencies from `package.json`:
+To install project dependencies from `package.json`:
 
 ```bash
 npm install
@@ -62,13 +60,13 @@ To boot the full-stack development application (Express API server + Vite client
 npm run dev
 ```
 
-The dev server binds to host `0.0.0.0` and port `3000`. Open `http://localhost:3000` in your browser.
+The dev server binds to host `0.0.0.0` and port `3000`.
 
 ### 2. Playground Controls
 * **Dialogue Interaction**: Conversational window to submit prompts to the AI Receptionist.
-* **Interactive State Transition Map**: Real-time visual SVG displaying current nodes (idle, awaiting_date, awaiting_time, awaiting_contact_information, awaiting_confirmation, completed).
-* **Fact Reconciliation Engine Overrides**: Click the **Override** button on the Fact Reconciliation Engine widget to manually edit extracted facts (name, phone, date, time, party_size) for debugging and simulation.
-* **Workflow Replay**: Perform an instant side-by-side simulation audit of any past session logs to detect behavior discrepancies.
+* **Interactive State Transition Map**: Real-time visual SVG displaying current nodes (`idle`, `awaiting_date`, `awaiting_time`, `awaiting_contact_information`, `awaiting_confirmation`, `completed`).
+* **Fact Reconciliation Engine Overrides**: Click the **Override** button on the Fact Reconciliation Engine widget to manually edit extracted facts (`name`, `phone`, `date`, `time`, `party_size`) for debugging and simulation.
+* **Workflow Replay**: Perform an instant side-by-side simulation audit of past session logs to detect behavior discrepancies.
 
 ---
 
@@ -102,10 +100,10 @@ npm start
 
 ## Deployment
 
-The application is designed to be deployed as a serverless container to **Google Cloud Run**.
+The application is configured to run in serverless containers on **Google Cloud Run**.
 
-* Standard Ingress Port: **3000**
-* Execution Mode: Production bundles run via `node dist/server.cjs`
+* Ingress Port: **3000**
+* Execution Command: `node dist/server.cjs`
 
 ---
 
@@ -117,7 +115,7 @@ The application is designed to be deployed as a serverless container to **Google
 * **`metadata.json`**: App identity metadata and capabilities array.
 * **`tsconfig.json`**: TypeScript compiler targets.
 * **`MASTER_SPEC.md`**: Technical specification detailing schemas, transition matrix, and pillars.
-* **`IMPLEMENTATION_PLAN.md`**: Phase-by-phase roadmap for platform development and product monetization.
+* **`IMPLEMENTATION_PLAN.md`**: Multi-phase roadmap for platform development and product monetization.
 * **`FUTURE_ARCHITECTURE.md`**: Log of deferred capabilities (vector databases, K8s, analytics clusters).
 * **`src/`**
   * **`main.tsx`**: React client entry file.
