@@ -1055,16 +1055,23 @@ export default function App() {
                         <div className="flex justify-between items-center text-[9px]">
                           <span className="text-[#FF5F1F] font-bold">{act.action_type}</span>
                           <span className={`px-1 text-[8px] uppercase font-bold ${
-                            act.status === "completed" ? "bg-green-950/40 text-green-400" :
-                            act.status === "running" ? "bg-blue-950/40 text-blue-400" :
-                            act.status === "failed" ? "bg-red-950/40 text-red-400" : "bg-yellow-950/40 text-yellow-400"
+                            act.status === "completed" ? "bg-green-950/40 text-green-400 border border-green-900/50" :
+                            act.status === "running" ? "bg-blue-950/40 text-blue-400 border border-blue-900/50" :
+                            act.status === "dead_letter" ? "bg-purple-950/40 text-purple-400 border border-purple-900/50" :
+                            act.status === "failed" ? "bg-red-950/40 text-red-400 border border-red-900/50" : "bg-yellow-950/40 text-yellow-400 border border-yellow-900/50"
                           }`}>
-                            {act.status}
+                            {act.status === "dead_letter" ? "DLQ (Dead Letter)" : act.status}
                           </span>
                         </div>
-                        <div className="text-[8px] text-[#444]">
-                          ID: {act.action_id.substring(0, 18)}...
+                        <div className="flex justify-between text-[8px] text-[#444]">
+                          <span>ID: {act.action_id.substring(0, 18)}...</span>
+                          {act.retries ? <span className="text-yellow-500/80">Retries: {act.retries}/{act.max_retries || 3}</span> : null}
                         </div>
+                        {act.last_error && (
+                          <div className="text-[8px] text-red-400/80 bg-red-950/20 p-1 border border-red-950/40 mt-0.5">
+                            Error: {act.last_error}
+                          </div>
+                        )}
                         <div className="text-[9px] text-[#999] bg-[#0A0A0A] p-1.5 border border-[#1C1C1C] rounded-none mt-1">
                           {JSON.stringify(act.payload)}
                         </div>

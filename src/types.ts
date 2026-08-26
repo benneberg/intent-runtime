@@ -18,6 +18,7 @@ export interface RuntimeSession {
   session_id: string;
   current_state: WorkflowState;
   facts: BookingFacts;
+  version: number; // Optimistic concurrency control
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +31,8 @@ export type RuntimeEventType =
   | 'ACTION_DISPATCHED'
   | 'ACTION_COMPLETED'
   | 'ACTION_FAILED'
+  | 'ACTION_RETRIED'
+  | 'ACTION_DEAD_LETTER'
   | 'ANOMALY_DETECTED'
   | 'FACTS_OVERRIDDEN';
 
@@ -66,7 +69,7 @@ export type ActionType =
   | 'CREATE_CALENDAR_EVENT'
   | 'DISPATCH_REMINDER';
 
-export type ActionStatus = 'pending' | 'running' | 'completed' | 'failed';
+export type ActionStatus = 'pending' | 'running' | 'completed' | 'failed' | 'dead_letter';
 
 export interface ActionQueueItem {
   action_id: string;
@@ -75,8 +78,18 @@ export interface ActionQueueItem {
   payload: Record<string, any>;
   status: ActionStatus;
   idempotency_key: string;
+  retries: number;
+  max_retries: number;
+  last_error?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface PaginationMetadata {
+  page: number;
+  limit: number;
+  total: number;
+  has_more: boolean;
 }
 
 export interface ChatMessage {

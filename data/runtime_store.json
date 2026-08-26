@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "sessions": [
+    {
+      "session_id": "demo-session-id-123456789",
+      "current_state": "idle",
+      "facts": {},
+      "version": 1,
+      "created_at": "2026-08-26T23:41:15.852Z",
+      "updated_at": "2026-08-26T23:41:15.852Z"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "3e4d6d88-3485-4d99-8065-5ece23f13123",
+      "session_id": "demo-session-id-123456789",
+      "event_type": "STATE_TRANSITION",
+      "payload": {
+        "from": "none",
+        "to": "idle",
+        "reason": "Session initialized"
+      },
+      "created_at": "2026-08-26T23:41:15.852Z"
+    }
+  ],
+  "telemetry": [],
+  "actionQueue": []
+}
