@@ -1,0 +1,14 @@
+# API Routes
+# Generated: 2026-08-27 19:02 UTC
+
+
+## server.ts
+  GET      /api/health
+  GET      /api/health/live
+  GET      /api/health/ready
+  GET      /api/db/stats
+  POST     /api/session/reset
+  POST     /api/session/input
+  POST     /api/session/facts/override
+  POST     /api/session/replay
+  GET      *

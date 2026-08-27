@@ -1,0 +1,10 @@
+{
+  "main_files": [
+    "server.ts"
+  ],
+  "server_files": [],
+  "cli_files": [],
+  "test_suites": [
+    "tests"
+  ]
+}

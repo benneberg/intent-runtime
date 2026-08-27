@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "generated": "2026-08-27 19:02 UTC",
+    "total_types": 14,
+    "note": "TypeScript type cross-reference. used_in lists files that explicitly import each type."
+  },
+  "types": {
+    "ActionQueueItem": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/services/actionWorker.ts",
+        "src/store/persistence.ts"
+      ]
+    },
+    "ActionStatus": {
+      "defined_in": "src/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/services/actionWorker.ts"
+      ]
+    },
+    "ActionType": {
+      "defined_in": "src/types.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "BookingFacts": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/services/stateMachine.ts"
+      ]
+    },
+    "ChatMessage": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx"
+      ]
+    },
+    "DatabaseState": {
+      "defined_in": "src/store/persistence.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "LogLevel": {
+      "defined_in": "src/services/logger.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "LogPayload": {
+      "defined_in": "src/services/logger.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "PaginationMetadata": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/store/persistence.ts"
+      ]
+    },
+    "PromptTelemetry": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/store/persistence.ts"
+      ]
+    },
+    "RuntimeEvent": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/store/persistence.ts"
+      ]
+    },
+    "RuntimeEventType": {
+      "defined_in": "src/types.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "RuntimeSession": {
+      "defined_in": "src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/store/persistence.ts"
+      ]
+    },
+    "WorkflowState": {
+      "defined_in": "src/types.ts",
+      "kind": "type",
+      "used_in": [
+        "server.ts",
+        "src/App.tsx",
+        "src/services/stateMachine.ts"
+      ]
+    }
+  }
+}

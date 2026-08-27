@@ -1,0 +1,183 @@
+{
+  "_meta": {
+    "generated": "2026-08-27 19:02 UTC",
+    "total_symbols": 35
+  },
+  "symbols": {
+    "GET /api/health": {
+      "file": "server.ts",
+      "line": 113,
+      "kind": "route"
+    },
+    "GET /api/health/live": {
+      "file": "server.ts",
+      "line": 122,
+      "kind": "route"
+    },
+    "GET /api/health/ready": {
+      "file": "server.ts",
+      "line": 132,
+      "kind": "route"
+    },
+    "GET /api/db/stats": {
+      "file": "server.ts",
+      "line": 146,
+      "kind": "route"
+    },
+    "POST /api/session/reset": {
+      "file": "server.ts",
+      "line": 158,
+      "kind": "route"
+    },
+    "POST /api/session/input": {
+      "file": "server.ts",
+      "line": 172,
+      "kind": "route"
+    },
+    "POST /api/session/facts/override": {
+      "file": "server.ts",
+      "line": 482,
+      "kind": "route"
+    },
+    "POST /api/session/replay": {
+      "file": "server.ts",
+      "line": 564,
+      "kind": "route"
+    },
+    "GET *": {
+      "file": "server.ts",
+      "line": 47,
+      "kind": "route"
+    },
+    "BookingFacts": {
+      "file": "src/types.ts",
+      "line": 9,
+      "kind": "interface"
+    },
+    "RuntimeSession": {
+      "file": "src/types.ts",
+      "line": 17,
+      "kind": "interface"
+    },
+    "RuntimeEvent": {
+      "file": "src/types.ts",
+      "line": 39,
+      "kind": "interface"
+    },
+    "PromptTelemetry": {
+      "file": "src/types.ts",
+      "line": 55,
+      "kind": "interface"
+    },
+    "ActionQueueItem": {
+      "file": "src/types.ts",
+      "line": 74,
+      "kind": "interface"
+    },
+    "PaginationMetadata": {
+      "file": "src/types.ts",
+      "line": 88,
+      "kind": "interface"
+    },
+    "ChatMessage": {
+      "file": "src/types.ts",
+      "line": 95,
+      "kind": "interface"
+    },
+    "WorkflowState": {
+      "file": "src/types.ts",
+      "line": 1,
+      "kind": "type"
+    },
+    "RuntimeEventType": {
+      "file": "src/types.ts",
+      "line": 26,
+      "kind": "type"
+    },
+    "ActionType": {
+      "file": "src/types.ts",
+      "line": 66,
+      "kind": "type"
+    },
+    "ActionStatus": {
+      "file": "src/types.ts",
+      "line": 72,
+      "kind": "type"
+    },
+    "PersistenceStore": {
+      "file": "src/store/persistence.ts",
+      "line": 20,
+      "kind": "class"
+    },
+    "DatabaseState": {
+      "file": "src/store/persistence.ts",
+      "line": 12,
+      "kind": "interface"
+    },
+    "RateLimitRecord": {
+      "file": "src/services/rateLimiter.ts",
+      "line": 4,
+      "kind": "interface"
+    },
+    "createRateLimiter": {
+      "file": "src/services/rateLimiter.ts",
+      "line": 9,
+      "kind": "function"
+    },
+    "adminAuthMiddleware": {
+      "file": "src/services/auth.ts",
+      "line": 4,
+      "kind": "function"
+    },
+    "evaluateMissingFields": {
+      "file": "src/services/stateMachine.ts",
+      "line": 6,
+      "kind": "function"
+    },
+    "computeNextState": {
+      "file": "src/services/stateMachine.ts",
+      "line": 19,
+      "kind": "function"
+    },
+    "generateBotReply": {
+      "file": "src/services/stateMachine.ts",
+      "line": 76,
+      "kind": "function"
+    },
+    "parseHeuristicIntentAndFacts": {
+      "file": "src/services/stateMachine.ts",
+      "line": 100,
+      "kind": "function"
+    },
+    "Logger": {
+      "file": "src/services/logger.ts",
+      "line": 12,
+      "kind": "class"
+    },
+    "LogPayload": {
+      "file": "src/services/logger.ts",
+      "line": 3,
+      "kind": "interface"
+    },
+    "LogLevel": {
+      "file": "src/services/logger.ts",
+      "line": 1,
+      "kind": "type"
+    },
+    "ActionWorker": {
+      "file": "src/services/actionWorker.ts",
+      "line": 5,
+      "kind": "class"
+    },
+    "ReplayStep": {
+      "file": "src/App.tsx",
+      "line": 35,
+      "kind": "interface"
+    },
+    "ReplayResponse": {
+      "file": "src/App.tsx",
+      "line": 47,
+      "kind": "interface"
+    }
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "version": "4",
+  "generated_at": "2026-08-27 19:02 UTC",
+  "project_fingerprint": "2c2a79ba30a1be51",
+  "files": {
+    "routes.txt": {
+      "hash": "fc2ccbb44c9f67df",
+      "size": 309,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts"
+      ],
+      "source_hashes": [
+        "e05a351a759c"
+      ],
+      "strategy": "if-changed"
+    },
+    "public-api.txt": {
+      "hash": "0411a57d86da5511",
+      "size": 673,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts"
+      ],
+      "source_hashes": [
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879"
+      ],
+      "strategy": "if-changed"
+    },
+    "tree.txt": {
+      "hash": "2f6b6d003894eecd",
+      "size": 1415,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [],
+      "source_hashes": [],
+      "strategy": "always"
+    },
+    "symbol-index.json": {
+      "hash": "dcd599439843fab1",
+      "size": 3902,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "src/App.tsx",
+        "src/main.tsx"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "d596ea6ad00a",
+        "2b36426d5ad7"
+      ],
+      "strategy": "if-changed"
+    },
+    "call-graph.json": {
+      "hash": "c9e0f1897371f906",
+      "size": 2095,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "src/App.tsx",
+        "src/main.tsx"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "d596ea6ad00a",
+        "2b36426d5ad7"
+      ],
+      "strategy": "always"
+    },
+    "types-extracted.ts": {
+      "hash": "2c271e9eef2a1e20",
+      "size": 3262,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/logger.ts"
+      ],
+      "source_hashes": [
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "de7dc2bb8ba9"
+      ],
+      "strategy": "if-changed"
+    },
+    "type-graph.json": {
+      "hash": "543df8ee9faf84f4",
+      "size": 2469,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "tests/persistence.test.ts",
+        "tests/stateMachine.test.ts",
+        "tests/api.test.ts",
+        "tests/validation.test.ts",
+        "src/App.tsx",
+        "src/main.tsx"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "dc041acd8a6f",
+        "21251ffe573a",
+        "2a4ae41649ed",
+        "aeb0eea32d25",
+        "d596ea6ad00a",
+        "2b36426d5ad7"
+      ],
+      "strategy": "always"
+    },
+    "entry-points.json": {
+      "hash": "49703e40e1b563ee",
+      "size": 118,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts"
+      ],
+      "source_hashes": [
+        "e05a351a759c"
+      ],
+      "strategy": "if-changed"
+    },
+    "dependency-graph.txt": {
+      "hash": "f018b394d639923d",
+      "size": 127,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "tests/persistence.test.ts",
+        "tests/stateMachine.test.ts",
+        "tests/api.test.ts",
+        "tests/validation.test.ts",
+        "src/App.tsx",
+        "src/main.tsx"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "dc041acd8a6f",
+        "21251ffe573a",
+        "2a4ae41649ed",
+        "aeb0eea32d25",
+        "d596ea6ad00a",
+        "2b36426d5ad7"
+      ],
+      "strategy": "if-changed"
+    },
+    "dependency-graph.md": {
+      "hash": "b107868ac1b7859a",
+      "size": 88,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/types.ts",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "tests/persistence.test.ts",
+        "tests/stateMachine.test.ts",
+        "tests/api.test.ts",
+        "tests/validation.test.ts",
+        "src/App.tsx",
+        "src/main.tsx"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "281075a9d21a",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "dc041acd8a6f",
+        "21251ffe573a",
+        "2a4ae41649ed",
+        "aeb0eea32d25",
+        "d596ea6ad00a",
+        "2b36426d5ad7"
+      ],
+      "strategy": "if-changed"
+    },
+    "change-surface.json": {
+      "hash": "28b20b45f8372341",
+      "size": 5377,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "server.ts",
+        "vite.config.ts",
+        "src/App.tsx",
+        "src/types.ts",
+        "src/main.tsx",
+        "src/store/persistence.ts",
+        "src/services/rateLimiter.ts",
+        "src/services/auth.ts",
+        "src/services/stateMachine.ts",
+        "src/services/logger.ts",
+        "src/services/validation.ts",
+        "src/services/actionWorker.ts",
+        "tests/persistence.test.ts",
+        "tests/stateMachine.test.ts",
+        "tests/api.test.ts",
+        "tests/validation.test.ts"
+      ],
+      "source_hashes": [
+        "e05a351a759c",
+        "9c319043c257",
+        "d596ea6ad00a",
+        "281075a9d21a",
+        "2b36426d5ad7",
+        "7c2009d66a1a",
+        "bc53e83969d9",
+        "5444e6f443de",
+        "20c4f4695879",
+        "de7dc2bb8ba9",
+        "6849e911da52",
+        "801445088f77",
+        "dc041acd8a6f",
+        "21251ffe573a",
+        "2a4ae41649ed",
+        "aeb0eea32d25"
+      ],
+      "strategy": "always"
+    },
+    "env-shape.txt": {
+      "hash": "3a407a3da38a7051",
+      "size": 534,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        ".env.example"
+      ],
+      "source_hashes": [
+        "25a6cbccbcd0"
+      ],
+      "strategy": "always"
+    },
+    "package.json": {
+      "hash": "44e1d25ee35d6462",
+      "size": 1022,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [
+        "package.json"
+      ],
+      "source_hashes": [
+        "5b5291f9a74b"
+      ],
+      "strategy": "always"
+    },
+    "external-dependencies.json": {
+      "hash": "1ef845c0b05bfbfc",
+      "size": 944,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [],
+      "source_hashes": [],
+      "strategy": "if-changed"
+    },
+    "capabilities.json": {
+      "hash": "850231ddf75827e5",
+      "size": 7874,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [],
+      "source_hashes": [],
+      "strategy": "if-missing"
+    },
+    "../LLM.md": {
+      "hash": "36179ead7b1096dd",
+      "size": 2522,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [],
+      "source_hashes": [],
+      "strategy": "always"
+    },
+    "../ARCHITECTURE.md": {
+      "hash": "a71f01bfbeb70673",
+      "size": 399,
+      "generated_at": "2026-08-27 19:02 UTC",
+      "source_files": [],
+      "source_hashes": [],
+      "strategy": "if-missing"
+    }
+  }
+}

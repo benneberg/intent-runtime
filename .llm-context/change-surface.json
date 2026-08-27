@@ -1,0 +1,240 @@
+{
+  "_meta": {
+    "generated": "2026-08-27 19:02 UTC",
+    "total_files": 16,
+    "scored_files": 16,
+    "weights": {
+      "fan_in": 0.4,
+      "recency": 0.25,
+      "pattern_density": 0.25,
+      "size": 0.1
+    },
+    "note": "Files ranked by likelihood of needing edits when implementing a change. fan_in=centrality, recency=recent activity, pattern_density=business logic density, size=inverse file size."
+  },
+  "files": [
+    {
+      "path": "src/types.ts",
+      "score": 0.7467,
+      "imported_by_count": 12,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 1.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.967
+      },
+      "rank": 1
+    },
+    {
+      "path": "src/services/logger.ts",
+      "score": 0.6811,
+      "imported_by_count": 10,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.833,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.977
+      },
+      "rank": 2
+    },
+    {
+      "path": "src/store/persistence.ts",
+      "score": 0.6013,
+      "imported_by_count": 8,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.667,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.846
+      },
+      "rank": 3
+    },
+    {
+      "path": "src/services/validation.ts",
+      "score": 0.5467,
+      "imported_by_count": 6,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.5,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.967
+      },
+      "rank": 4
+    },
+    {
+      "path": "src/services/stateMachine.ts",
+      "score": 0.54,
+      "imported_by_count": 6,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.5,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.9
+      },
+      "rank": 5
+    },
+    {
+      "path": "src/services/auth.ts",
+      "score": 0.4151,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.167,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.985
+      },
+      "rank": 6
+    },
+    {
+      "path": "src/services/rateLimiter.ts",
+      "score": 0.414,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.167,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.974
+      },
+      "rank": 7
+    },
+    {
+      "path": "src/services/actionWorker.ts",
+      "score": 0.4061,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.167,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.895
+      },
+      "rank": 8
+    },
+    {
+      "path": "src/main.tsx",
+      "score": 0.35,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 1.0
+      },
+      "rank": 9
+    },
+    {
+      "path": "vite.config.ts",
+      "score": 0.3492,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.992
+      },
+      "rank": 10
+    },
+    {
+      "path": "tests/persistence.test.ts",
+      "score": 0.3461,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.961
+      },
+      "rank": 11
+    },
+    {
+      "path": "tests/validation.test.ts",
+      "score": 0.3454,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.954
+      },
+      "rank": 12
+    },
+    {
+      "path": "tests/stateMachine.test.ts",
+      "score": 0.3435,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.935
+      },
+      "rank": 13
+    },
+    {
+      "path": "tests/api.test.ts",
+      "score": 0.3432,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.932
+      },
+      "rank": 14
+    },
+    {
+      "path": "src/App.tsx",
+      "score": 0.3167,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.167,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.0
+      },
+      "rank": 15
+    },
+    {
+      "path": "server.ts",
+      "score": 0.311,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.5,
+        "pattern_density": 0.5,
+        "size": 0.61
+      },
+      "rank": 16
+    }
+  ]
+}

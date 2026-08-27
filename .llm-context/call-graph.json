@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "generated": "2026-08-27 19:02 UTC",
+    "total_functions": 22,
+    "connected_functions": 11,
+    "depth": 2,
+    "note": "Shows which functions call which others (2-level depth). Only includes functions with at least one internal connection. Use with symbol-index.json to trace call paths."
+  },
+  "graph": {
+    "addAction": {
+      "file": "src/store/persistence.ts",
+      "line": 246,
+      "called_by": [
+        "if"
+      ]
+    },
+    "addEvent": {
+      "file": "src/store/persistence.ts",
+      "line": 214,
+      "called_by": [
+        "if",
+        "resetSession"
+      ]
+    },
+    "computeNextState": {
+      "file": "src/services/stateMachine.ts",
+      "line": 19,
+      "calls": [
+        "evaluateMissingFields"
+      ]
+    },
+    "evaluateMissingFields": {
+      "file": "src/services/stateMachine.ts",
+      "line": 6,
+      "called_by": [
+        "computeNextState",
+        "if",
+        "switch"
+      ]
+    },
+    "flushSync": {
+      "file": "src/store/persistence.ts",
+      "line": 126,
+      "called_by": [
+        "handleShutdown",
+        "if"
+      ]
+    },
+    "generateUUID": {
+      "file": "src/store/persistence.ts",
+      "line": 109,
+      "called_by": [
+        "if",
+        "resetSession"
+      ]
+    },
+    "handleShutdown": {
+      "file": "server.ts",
+      "line": 655,
+      "calls": [
+        "flushSync"
+      ]
+    },
+    "if": {
+      "file": "src/App.tsx",
+      "line": 848,
+      "calls": [
+        "addAction",
+        "addEvent",
+        "evaluateMissingFields",
+        "flushSync",
+        "generateUUID",
+        "parseHeuristicIntentAndFacts"
+      ]
+    },
+    "parseHeuristicIntentAndFacts": {
+      "file": "src/services/stateMachine.ts",
+      "line": 100,
+      "called_by": [
+        "if"
+      ]
+    },
+    "resetSession": {
+      "file": "src/store/persistence.ts",
+      "line": 184,
+      "calls": [
+        "addEvent",
+        "generateUUID"
+      ]
+    },
+    "switch": {
+      "file": "src/services/stateMachine.ts",
+      "line": 77,
+      "calls": [
+        "evaluateMissingFields"
+      ]
+    }
+  }
+}

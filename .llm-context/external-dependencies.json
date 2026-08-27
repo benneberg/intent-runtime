@@ -1,0 +1,46 @@
+{
+  "service": "applet",
+  "repository": null,
+  "exposes": {
+    "api": [
+      "GET /api/db/stats",
+      "GET /api/health",
+      "GET /api/health/live",
+      "GET /api/health/ready",
+      "POST /api/session/facts/override",
+      "POST /api/session/input",
+      "POST /api/session/replay",
+      "POST /api/session/reset"
+    ],
+    "events": [],
+    "types": [
+      "ActionQueueItem",
+      "ActionStatus",
+      "ActionType",
+      "BookingFacts",
+      "ChatMessage",
+      "DatabaseState",
+      "LogLevel",
+      "LogPayload",
+      "PaginationMetadata",
+      "PromptTelemetry",
+      "RuntimeEvent",
+      "RuntimeEventType",
+      "RuntimeSession",
+      "WorkflowState"
+    ]
+  },
+  "depends_on": {
+    "services": [],
+    "apis_consumed": [],
+    "databases": [],
+    "message_queues": [],
+    "external_apis": []
+  },
+  "tags": [
+    "frontend",
+    "services",
+    "typescript"
+  ],
+  "detected_at": "2026-08-27 19:02 UTC"
+}

@@ -1,0 +1,20 @@
+# Public API (function signatures)
+# Generated: 2026-08-27 19:02 UTC
+
+
+## src/services/rateLimiter.ts
+  function createRateLimiter(options: { windowMs: number; maxRequests: number })
+
+## src/services/auth.ts
+  function adminAuthMiddleware(req: Request, res: Response, next: NextFunction)
+
+## src/services/stateMachine.ts
+  function evaluateMissingFields(facts: BookingFacts): WorkflowState
+  function computeNextState(
+  oldState: WorkflowState,
+  intent: string,
+  mergedFacts: BookingFacts,
+  newlyExtracted: BookingFacts
+): WorkflowState
+  function generateBotReply(state: WorkflowState, facts: BookingFacts): string
+  function parseHeuristicIntentAndFacts(text: string)
