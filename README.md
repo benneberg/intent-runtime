@@ -1,5 +1,5 @@
 # Intent Runtime
-https://github.com/benneberg/intent-runtime/blob/main/README.md
+
 > A deterministic state machine execution kernel, continuous fact reconciliation engine, and visual telemetry dashboard for conversational AI receptionists.
 
 [![CI](https://github.com/benneberg/intent-runtime/actions/workflows/ci.yml/badge.svg)](https://github.com/benneberg/intent-runtime/actions/workflows/ci.yml)
