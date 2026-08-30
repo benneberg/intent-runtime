@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write # REQUIRED: Allows the CI to push the new lockfile back to your repo
 
 jobs:
   validate:
@@ -16,19 +16,21 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Recommended for auto-commit action to properly push changes
+          fetch-depth: 0 
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          # cache: 'npm'  <-- KEEP THIS COMMENTED OUT FOR THIS RUN
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Lint and Type Check
         run: npm run lint
@@ -38,3 +40,12 @@ jobs:
 
       - name: Build Application Bundle
         run: npm run build
+
+      - name: Auto-commit package-lock.json
+        # Only run this step on Node 20.x to avoid Git push race conditions 
+        # across your matrix (18.x, 20.x, and 22.x)
+        if: matrix.node-version == '20.x'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-generate and save package-lock.json"
+          file_pattern: "package-lock.json"
