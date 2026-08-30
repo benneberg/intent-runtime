@@ -7,46 +7,31 @@ on:
     branches: [main]
 
 permissions:
-  contents: write # Required to push the corrected lockfile back to the repo
+  contents: read
 
 jobs:
   validate:
-    name: Build, Lint & Test (Node ${{ matrix.node-version }})
+    name: Build, Lint & Test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Ensures the auto-commit action has proper git history
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          # Cache is intentionally disabled until the lockfile is 100% cross-platform stable
+          bun-version: latest
 
       - name: Install dependencies
-        # We use 'npm install' instead of 'npm ci' here. 
-        # 'npm install' is smart enough to fetch missing Linux native bindings 
-        # (like Tailwind Oxide) even if the lockfile was originally generated on macOS/Windows.
-        run: npm install
+        # Bun natively understands bun.lock and will fetch the correct 
+        # Linux native bindings for @tailwindcss/oxide automatically.
+        run: bun install
 
       - name: Lint and Type Check
-        run: npm run lint
+        run: bun run lint
 
       - name: Run Test Suite
-        run: npm test
+        run: bun run test
 
       - name: Build Application Bundle
-        run: npm run build
-
-      - name: Auto-commit corrected package-lock.json
-        # This only runs on Node 20.x to prevent all 3 matrix jobs from racing to commit at the same time
-        if: matrix.node-version == '20.x'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update package-lock.json with linux-x64 native bindings"
-          file_pattern: "package-lock.json"
+        run: bun run build
