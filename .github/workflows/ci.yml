@@ -18,7 +18,7 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Ensures the auto-commit action has proper git history
 
