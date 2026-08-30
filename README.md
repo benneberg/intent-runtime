@@ -9,7 +9,7 @@
 
 ---
 
-## ✨ Features
+## Features
 
 - **Deterministic State Machine:** Strict, auditable node matrix (`idle` → `awaiting_date` → `awaiting_time` → `awaiting_contact_information` → `awaiting_confirmation` → `completed`) eliminating LLM hallucination and out-of-order transitions.
 - **Continuous Fact Reconciliation Engine:** Automatically extracts, merges, and validates conversational booking entities (`date`, `time`, `party_size`, `name`, `phone`) with full support for administrative live overrides.
