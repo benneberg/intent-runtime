@@ -8,138 +8,128 @@
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-green.svg)](https://nodejs.org/)
 
 ---
-
-## Features
-
-- **Deterministic State Machine:** Strict, auditable node matrix (`idle` → `awaiting_date` → `awaiting_time` → `awaiting_contact_information` → `awaiting_confirmation` → `completed`) eliminating LLM hallucination and out-of-order transitions.
-- **Continuous Fact Reconciliation Engine:** Automatically extracts, merges, and validates conversational booking entities (`date`, `time`, `party_size`, `name`, `phone`) with full support for administrative live overrides.
-- **Optimistic Concurrency & Session Persistence:** Version-tracked session store with automatic disk synchronization and conflict prevention (`409 Conflict`).
-- **Asynchronous Action Worker & DLQ:** Decouples external side-effects (e.g., calendar booking, SMS dispatch) with exponential backoff retries and Dead-Letter Queue routing.
-- **Immutable Event Ledger & Replay Engine:** Captures all transitions and input events for auditing, compliance, and instant side-by-side workflow replay.
-- **Interactive Visual Dashboard:** Real-time state transition graph, telemetry logs, action queue monitor, and live dialogue testing console.
-
----
-
-## Installation
-
-Ensure you have **Node.js (>= 18.0.0)** installed.
-
-```bash
-# Clone the repository
+A deterministic execution runtime for conversational booking workflows.
+Intent Runtime turns conversational input into structured booking facts, evaluates a deterministic workflow, persists session state and events, and dispatches asynchronous actions.
+The key architectural principle is:
+LLM output may provide intent and facts, but deterministic runtime code remains authoritative for workflow state and side effects.
+What it does
+•  Deterministic workflow — Moves sessions through an explicit booking state machine instead of allowing an LLM to decide workflow transitions.
+•  Fact extraction and reconciliation — Extracts booking information such as date, time, party size, name, and phone, then merges it with the current session facts.
+•  LLM with deterministic fallback — Uses Gemini for natural-language interpretation when configured, with deterministic heuristic parsing available without an API key.
+•  Persistent sessions — Stores session state, events, and queued actions using the runtime persistence layer.
+•  Event history and replay — Records runtime events and supports replaying session history through the deterministic workflow.
+•  Asynchronous actions — Processes external side effects through a background action worker with retries and failed-job handling.
+•  Protected administration — Provides authenticated administrative operations for fact overrides and session resets.
+•  Visual dashboard — Includes a browser-based interface for interacting with sessions and inspecting runtime behavior.
+Current workflow
+The booking workflow uses the following states:
+idle
+│
+▼
+awaiting_date
+│
+▼
+awaiting_time
+│
+▼
+awaiting_contact_information
+│
+▼
+awaiting_confirmation
+│
+├── confirm ──► completed
+│
+└── reject  ──► idle
+The runtime may skip intermediate states when the required information is already available.
+For the complete implementation architecture, see ARCHITECTURE.md ./ARCHITECTURE.md.
+Installation
+Requires Node.js 18 or later.
 git clone https://github.com/benneberg/intent-runtime.git
 cd intent-runtime
-
-# Install dependencies
 npm install
-```
 
----
+Quick start
+Copy the example environment configuration:
+cp .env.example .env
 
-## Quick Start
+GEMINI_API_KEY is optional. Without it, the runtime uses deterministic heuristic parsing.
+Start the development server:
+npm run dev
 
-1. **Configure Environment:**
-   ```bash
-   cp .env.example .env
-   ```
-   *(Optional: Set `GEMINI_API_KEY` for LLM parsing; the runtime automatically falls back to deterministic heuristic parsing if omitted).*
+Then open:
+http://localhost:3000
 
-2. **Start the Development Server:**
-   ```bash
-   npm run dev
-   ```
+API
+The runtime exposes a REST API.
+Health
+GET /api/health
+GET /api/health/live
+GET /api/health/ready
 
-3. Open **`http://localhost:3000`** in your browser to interact with the visual dashboard and receptionist console.
+Conversational sessions
+POST /api/session/input
 
----
+Example:
+{
+  "session_id": "sess-default-1",
+  "text": "I'd like to book a table for 4 guests tomorrow at 7pm",
+  "request_id": "req-001"
+}
 
-## Usage & API Reference
+Administration and diagnostics
+POST /api/session/facts/override
+POST /api/session/replay
+POST /api/session/reset
+GET  /api/db/stats?page=1&limit=50
 
-The Intent Runtime exposes RESTful HTTP endpoints for integration and administration:
+Administrative operations are protected by the configured authorization mechanism.
+Configuration
+Configuration is provided through environment variables.
+Variable	Required	Description
+`GEMINI_API_KEY`	No	Gemini API key used for natural-language intent and fact extraction
+`ADMIN_API_KEY`	No	Authorization token for administrative session operations
+`APP_URL`	No	Application base URL; defaults to `http://localhost:3000`
+See .env.example for the available configuration.
+Development
+Command	Description
+`npm run dev`	Start the development server
+`npm test`	Run the test suite
+`npm run test:watch`	Run tests in watch mode
+`npm run lint`	Run TypeScript type checking
+`npm run build`	Build the frontend and production server
+`npm start`	Start the production build
+`npm run clean`	Remove build and coverage artifacts
+Project structure
+The main runtime boundaries are:
+File	Responsibility
+`server.ts`	HTTP/API application boundary
+`src/services/stateMachine.ts`	deterministic workflow logic
+`src/services/validation.ts`	request validation
+`src/services/auth.ts`	administrative authorization
+`src/services/rateLimiter.ts`	request throttling
+`src/services/actionWorker.ts`	asynchronous action processing
+`src/store/persistence.ts`	runtime persistence
+`src/types.ts`	shared runtime types
+`src/App.tsx`	browser application
+See ARCHITECTURE.md ./ARCHITECTURE.md for how these components interact.
+Design principles
+•  Deterministic state transitions — The workflow state is controlled by explicit runtime logic.
+•  LLMs are not the authority — Language models can interpret conversational input and propose structured facts. They do not directly control workflow transitions.
+•  State and side effects are separated — The runtime determines state synchronously and represents external work as asynchronous actions.
+•  Runtime state is observable — Session events and diagnostics make workflow behavior inspectable and replayable.
+•  Security belongs at the boundary — Untrusted API input is validated, and administrative operations are protected separately from normal conversational operations.
+Testing
+The test suite covers the main runtime boundaries:
+tests/api.test.ts
+tests/persistence.test.ts
+tests/stateMachine.test.ts
+tests/validation.test.ts
 
-### Health Checks
-- `GET /api/health` — Basic service status.
-- `GET /api/health/live` — Process liveness probe (PID and memory usage).
-- `GET /api/health/ready` — Readiness probe (database readiness and Gemini client status).
+Changes to workflow behavior should normally include corresponding state-machine tests.
+Contributing
+Contributions are welcome.
+See CONTRIBUTING.md ./CONTRIBUTING.md and CODE_OF_CONDUCT.md ./CODE_OF_CONDUCT.md before submitting changes.
+License
+Intent Runtime is licensed under the MIT License ./LICENSE.
 
-### Conversational Session
-- `POST /api/session/input` — Submit user dialogue to the active session.
-  ```json
-  {
-    "session_id": "sess-default-1",
-    "text": "I'd like to book a table for 4 guests tomorrow at 7pm",
-    "request_id": "req-001"
-  }
-  ```
 
-### Administrative & Diagnostics
-- `POST /api/session/facts/override` — Manually override extracted session facts (requires `ADMIN_API_KEY` or dev authorization).
-- `POST /api/session/replay` — Re-execute an event history through the state machine to audit deterministic state transitions.
-- `POST /api/session/reset` — Reset a session back to the initial `idle` state.
-- `GET /api/db/stats?page=1&limit=50` — Retrieve paginated session history, event logs, action queue jobs, and system metrics.
-
----
-
-## Development
-
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Starts the Express server with Vite middleware on port 3000 |
-| `npm test` | Runs the automated Vitest test suite across state machine, persistence, and validation |
-| `npm run test:watch` | Runs Vitest in interactive watch mode |
-| `npm run lint` | Performs TypeScript type-checking without emitting files (`tsc --noEmit`) |
-| `npm run build` | Compiles frontend assets into `dist/` and bundles `server.ts` into `dist/server.cjs` |
-| `npm start` | Launches the production-compiled CommonJS server |
-| `npm run clean` | Cleans build artifacts and coverage directories |
-
----
-
-## Configuration
-
-Configuration is managed via environment variables defined in `.env.example`:
-
-| Variable | Required | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `GEMINI_API_KEY` | No | *None (uses heuristics)* | Google Gemini API key for natural language intent & entity parsing |
-| `ADMIN_API_KEY` | No | *Dev Mode* | Secret token for securing administrative fact overrides and resets |
-| `APP_URL` | No | `http://localhost:3000` | Base URL for runtime webhook and reverse-proxy resolution |
-
----
-
-## Architecture
-
-The system coordinates six primary runtime layers:
-
-```text
-[ User Dialogue / HTTP Client ]
-             │
-             ▼
-    [ Input Validation & Rate Limiter ]
-             │
-             ▼
-    [ Intent & Fact Extraction ] (Gemini LLM / Rule Heuristics)
-             │
-             ▼
-    [ Fact Reconciliation Engine ] ◄── [ Admin Live Override ]
-             │
-             ▼
-    [ Deterministic State Machine ] (Version Lock & Guards)
-             │
-      ┌──────┴──────────────────────────┐
-      ▼                                 ▼
-[ Immutable Event Store ]     [ Asynchronous Action Queue & DLQ ]
-(Auditing & Replay Engine)    (Calendar Event / Notification Worker)
-```
-
-For complete technical specifications and transition matrices, see [MASTER_SPEC.md](./MASTER_SPEC.md) and [ARCHITECTURE.md](./ARCHITECTURE.md).
-
----
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF_CONDUCT.md) before submitting pull requests.
-
----
-
-## License
-
-This project is licensed under the [MIT License](./LICENSE).
