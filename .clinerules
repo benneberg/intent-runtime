@@ -1,0 +1,18 @@
+# Intent Runtime - Cline & Roo Code Agent Rules
+
+## Project Identity
+- Stack: TypeScript 5.8 / Node.js 20+ / Express backend / React 19 + Vite frontend / Vitest
+- Port: 3000 (bind to 0.0.0.0 for container compatibility)
+
+## Quality Gate Workflow
+Always run and verify these checks before completing tasks:
+1. `npm test` (or `bun run test`) -> All Vitest test suites must pass (state machine, validation, persistence, API).
+2. `npm run lint` (or `bun run lint`) -> Type check (`tsc --noEmit`) must succeed with 0 errors.
+3. `npm run build` (or `bun run build`) -> Frontend and backend compilation must complete cleanly.
+
+## Key Boundaries
+- `server.ts`: HTTP routing, rate limiting, request validation, authentication, and graceful shutdown.
+- `src/services/stateMachine.ts`: Deterministic workflow transitions and response formulation.
+- `src/services/validation.ts`: Zod request schemas.
+- `src/store/persistence.ts`: File-backed storage with optimistic concurrency locking.
+- `src/services/actionWorker.ts`: Asynchronous job execution with retries and DLQ routing.

@@ -17,20 +17,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Bun
+      - name: Setup Bun Runtime
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
       - name: Install dependencies
-        # Bun natively understands bun.lock and will fetch the correct 
-        # Linux native bindings for @tailwindcss/oxide automatically.
         run: bun install
 
-      - name: Lint and Type Check
+      - name: Type Check & Lint
         run: bun run lint
 
-      - name: Run Test Suite
+      - name: Execute Vitest Test Suite
         run: bun run test
 
       - name: Build Application Bundle
