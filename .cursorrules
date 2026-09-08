@@ -1,0 +1,34 @@
+# Intent Runtime - Cursor Rules & Architectural Directives
+
+You are working on the Intent Runtime: a deterministic state machine execution kernel, continuous fact reconciliation engine, and visual dashboard.
+
+## Core Architectural Invariants (DO NOT VIOLATE)
+
+1. **Deterministic Workflow Engine is Authoritative**:
+   - The LLM parses input into candidate intents and extracted facts.
+   - The LLM MUST NEVER directly mutate the workflow state.
+   - State transitions are strictly governed by `src/services/stateMachine.ts` (`computeNextState`, `evaluateMissingFields`).
+
+2. **Facts vs. State Separation**:
+   - `facts` (date, time, party_size, name, phone) represent accumulated information.
+   - `current_state` represents the active workflow requirement (`idle`, `awaiting_date`, `awaiting_time`, `awaiting_contact_information`, `awaiting_confirmation`, `completed`).
+
+3. **Asynchronous Side Effects**:
+   - External operations (calendar events, SMS dispatches) MUST NOT block synchronous HTTP requests.
+   - Enqueue jobs into `ActionWorker` (`src/services/actionWorker.ts`) with retry and DLQ semantics.
+
+4. **Optimistic Concurrency & Persistence**:
+   - Every session update increments `version`.
+   - Never mutate session facts or state without passing through `PersistenceStore.getInstance().updateSession()` to prevent race conditions.
+
+5. **Security & Input Validation**:
+   - All external endpoints must parse payloads using Zod schemas from `src/services/validation.ts`.
+   - Administrative endpoints (`/api/session/reset`, `/api/session/facts/override`) must pass through `adminAuthMiddleware`.
+   - Secret API keys (Gemini, Admin keys) must NEVER be exposed to the browser client.
+
+## Code Style & Implementation Idioms
+
+- **TypeScript**: Strict mode enabled (`noEmit: true` on lint). Do not use `any` unless strictly necessary for generic payloads.
+- **Imports**: Top-level named ES module imports with `.js` extensions for relative TypeScript imports in server-side files.
+- **Logging**: Use `Logger.info()`, `Logger.warn()`, `Logger.error()`, `Logger.debug()` from `src/services/logger.ts`. Avoid raw `console.log`.
+- **Testing**: Every change to transition logic, validation schemas, or persistence MUST include tests in `tests/` and pass `npm test`.
