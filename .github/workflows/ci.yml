@@ -15,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # Ensures the auto-commit action has proper git history
 
       - name: Setup Bun Runtime
         uses: oven-sh/setup-bun@v2
